@@ -20,8 +20,8 @@ public class Pratica92 {
     public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Execução iniciada");
         System.out.println(sdf.format(new Date()));
-        long delay = 2*HORA_CHEIA - new Date().getTime()%(HORA_CHEIA*2) - 
-                    (new Date().getTime()/HORA_CHEIA)%2;
+        long delay = HORA_CHEIA/6 - new Date().getTime() % (HORA_CHEIA/6)-2;
+        EsperandoTask esperando = new EsperandoTask();
         long period = INTERVALO_CHEIO/6; //10s
         long atraso = HORA_CHEIA - new Date().getTime() % HORA_CHEIA;
 
@@ -29,8 +29,8 @@ public class Pratica92 {
         Timer timerMinuto = new Timer("hora-cheia-timer", true);
         Timer timerEsperando = new Timer("esperando-timer", true);
 
-        timerMinuto.scheduleAtFixedRate(new MensagemTask(), atraso, INTERVALO_CHEIO);
-        timerEsperando.scheduleAtFixedRate(new EsperandoTask(), delay, period);
+        timerMinuto.scheduleAtFixedRate(new MensagemTask(esperando), atraso, INTERVALO_CHEIO);
+        timerEsperando.scheduleAtFixedRate(esperando, delay, period);
         
         System.out.println("Pressione Enter para terminar...");
         System.in.read();

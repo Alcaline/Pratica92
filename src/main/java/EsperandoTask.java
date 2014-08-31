@@ -12,11 +12,16 @@ import java.util.TimerTask;
  * @author Guiduda
  */
 public class EsperandoTask extends TimerTask{
+    protected boolean ativo = false;
 
     @Override
     public void run() {
-        if(((System.currentTimeMillis()/60000)%2) == 1)
+        if(ativo)
             System.out.println("Esperando...");
+    }
+    
+    public void setEstado(boolean flag){
+        ativo = flag;
     }
     
 }
