@@ -17,17 +17,25 @@ public class Pratica92 {
     private static final long INTERVALO_CHEIO = 60000; // 60s
     private static final SimpleDateFormat sdf = new SimpleDateFormat("'Hora atual:' HH:mm:ss");
     
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Execução iniciada");
         System.out.println(sdf.format(new Date()));
+        long delay = 2*HORA_CHEIA - new Date().getTime()%(HORA_CHEIA*2) - 
+                    (new Date().getTime()/HORA_CHEIA)%2;
+        long period = INTERVALO_CHEIO/6; //10s
         long atraso = HORA_CHEIA - new Date().getTime() % HORA_CHEIA;
-        
-        Timer timer = new Timer("hora-cheia-timer");
-        timer.scheduleAtFixedRate(new MensagemTask(), atraso, INTERVALO_CHEIO);
+
+             
+        Timer timerMinuto = new Timer("hora-cheia-timer", true);
+        Timer timerEsperando = new Timer("esperando-timer", true);
+
+        timerMinuto.scheduleAtFixedRate(new MensagemTask(), atraso, INTERVALO_CHEIO);
+        timerEsperando.scheduleAtFixedRate(new EsperandoTask(), delay, period);
         
         System.out.println("Pressione Enter para terminar...");
         System.in.read();
-        timer.cancel();
+        timerMinuto.cancel();
+        timerEsperando.cancel();
         
         System.out.println("Execução finalizada");
         System.out.println(sdf.format(new Date()));
